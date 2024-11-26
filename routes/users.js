@@ -3,7 +3,7 @@ const router = express.Router();
 const UserController = require("../controller/UserController");
 const validate = require("../middleware/validate");
 
-router.post("/add",validate, UserController.add);
+router.post("/add",validate.validate, UserController.add);
 
 router.get("/showusers", UserController.showusers);
 

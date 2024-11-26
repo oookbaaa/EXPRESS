@@ -12,11 +12,13 @@ mongo
     console.log("Error connecting to MongoDB", err);
     process.exit();
   });
+  const productRouter = require("./routes/products");
 const userRouter = require("./routes/users");
 const app = express();
 //app.use(bodyParser.json());
 app.use(express.json());
 app.use("/users", userRouter);
+app.use("/products", productRouter);
 
 const server = http.createServer(app, console.log("Server run"));
 server.listen(3000);

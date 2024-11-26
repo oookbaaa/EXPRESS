@@ -3,14 +3,14 @@ const yup = require("yup");
 async function validate(req, res, next) {
   try {
     const schema = yup.object().shape({
-      username: yup.string().required(),
+      username: yup
+        .string()
+        .matches(/^[A-Z][a-z]/)
+        .required(),
       email: yup
         .string()
         .email()
-        .matches(
-          /^[a-zA-Z0-9._%+-]+@esprit\.tn$/,
-          "Email must be a valid @esprit.tn email"
-        )
+        .matches(/^@esprit\.tn$/, "Email must be a valid @esprit.tn email")
         .required(),
       cin: yup.number().required(),
     });
@@ -22,4 +22,19 @@ async function validate(req, res, next) {
   }
 }
 
-module.exports = validate;
+async function product(req, res, next) {
+  try {
+    const schema = yup.object().shape({
+      name: yup.string().required(),
+      desc: yup.string().required(),
+      prix: yup.number().required(),
+      status: yup.boolean().required(),
+    });
+    await schema.validate(req.body);
+    next();
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+}
+
+module.exports = {validate, product};
